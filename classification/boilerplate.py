@@ -564,7 +564,7 @@ raw_default_cfgs = {
         url='https://storage.googleapis.com/vit_models/augreg/S_32-i21k-300ep-lr_0.001-aug_light1-wd_0.03-do_0.0-sd_0.0--imagenet2012-steps_20k-lr_0.03-res_384.npz',
         hf_hub_id='timm/',
         custom_load=True, input_size=(3, 384, 384), crop_pct=1.0),
-    'myvit_small_patch16_224.augreg_in21k_ft_in1k': _cfg(
+    'vit_small_patch16_224.augreg_in21k_ft_in1k': _cfg(
         url='https://storage.googleapis.com/vit_models/augreg/S_16-i21k-300ep-lr_0.001-aug_light1-wd_0.03-do_0.0-sd_0.0--imagenet2012-steps_20k-lr_0.03-res_224.npz',
         # hf_hub_id='timm/',
         custom_load=True),
@@ -615,7 +615,7 @@ raw_default_cfgs = {
         input_size=(3, 384, 384), crop_pct=1.0),
 
     # How to train your ViT (augreg) weights trained on in1k only
-    'myvit_small_patch16_224.augreg_in1k': _cfg(
+    'vit_small_patch16_224.augreg_in1k': _cfg(
         url='https://storage.googleapis.com/vit_models/augreg/S_16-i1k-300ep-lr_0.001-aug_medium2-wd_0.1-do_0.0-sd_0.0--imagenet2012-steps_20k-lr_0.01-res_224.npz',
         hf_hub_id='timm/',
         custom_load=True),
@@ -675,7 +675,7 @@ raw_default_cfgs = {
         url='https://storage.googleapis.com/vit_models/augreg/S_32-i21k-300ep-lr_0.001-aug_light1-wd_0.03-do_0.0-sd_0.0.npz',
         hf_hub_id='timm/',
         custom_load=True, num_classes=21843),
-    'myvit_small_patch16_224.augreg_in21k': _cfg(
+    'vit_small_patch16_224.augreg_in21k': _cfg(
         url='https://storage.googleapis.com/vit_models/augreg/S_16-i21k-300ep-lr_0.001-aug_light1-wd_0.03-do_0.0-sd_0.0.npz',
         hf_hub_id='timm/',
         custom_load=True, num_classes=21843),
@@ -705,7 +705,7 @@ raw_default_cfgs = {
         hf_hub_id='timm/'),
 
     # DINO pretrained - https://arxiv.org/abs/2104.14294 (no classifier head, for fine-tune only)
-    'myvit_small_patch16_224.dino': _cfg(
+    'vit_small_patch16_224.dino': _cfg(
         url='https://dl.fbaipublicfiles.com/dino/dino_deitsmall16_pretrain/dino_deitsmall16_pretrain.pth',
         hf_hub_id='timm/',
         mean=IMAGENET_DEFAULT_MEAN, std=IMAGENET_DEFAULT_STD, num_classes=0),

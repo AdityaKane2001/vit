@@ -672,11 +672,11 @@ def vit_small_patch32_384(pretrained: bool = False, **kwargs) -> VisionTransform
 
 
 @register_model
-def myvit_small_patch16_224(pretrained: bool = False, **kwargs) -> VisionTransformer:
+def vit_small_patch16_224(pretrained: bool = False, **kwargs) -> VisionTransformer:
     """ ViT-Small (ViT-S/16)
     """
     model_args = dict(patch_size=16, embed_dim=384, depth=12, num_heads=6)
-    model = _create_vision_transformer('myvit_small_patch16_224', pretrained=pretrained, **dict(model_args, **kwargs))
+    model = _create_vision_transformer('vit_small_patch16_224', pretrained=pretrained, **dict(model_args, **kwargs))
     return model
 
 

@@ -30,7 +30,7 @@ from timm.models import generate_default_cfgs, register_model, register_model_de
 from boilerplate import checkpoint_filter_fn, init_weights, _init_weights, \
     load_pretrained, no_weight_decay, group_matcher, set_grad_checkpointing, \
     get_classifier, _intermediate_layers, get_intermediate_layers, \
-    reset_classifier, raw_default_cfgs as original_raw_default_cfgs
+    reset_classifier, default_cfgs
 
 __all__ = ["default_cfgs"]
 
@@ -378,44 +378,14 @@ class MyAmazingDifferentVisionTransformer(nn.Module):
         x = self.forward_head(x)
         return x
 
-
-
-
-# myamazingDifferentvit_tiny_patch16_224_dcfg = default_cfgs["vit_tiny_patch16_224"]
-
-new_raw_default_cfgs = dict()
-
-# def generate_custom_default_cfgs(variant_name, original_variant_name):
-
-variant_name = "myamazingDifferentvit_base_patch16_224"
-original_variant_name = "vit_base_patch16_224"
-
-
-for k in original_raw_default_cfgs.keys():
-    if k.startswith(original_variant_name):
-        print(k)
-        pretraining_tag = k.split(".")[1]
-        cfg = deepcopy(original_raw_default_cfgs[k])
-        print(cfg)
-        cfg.pop("hf_hub_id", None)
-        new_raw_default_cfgs[".".join([variant_name, pretraining_tag])] = cfg
-
-print(new_raw_default_cfgs)
-
-default_cfgs = generate_default_cfgs(new_raw_default_cfgs)
-
-# for cfg_name, cfg in myamazingDifferentvit_tiny_patch16_224_dcfg.cfgs.items():
-#     cfg.hf_hub_id = None
-#     default_cfgs["myamazingDifferentvit_tiny_patch16_224." + cfg_name] = myamazingDifferentvit_tiny_patch16_224_dcfg
-
 @register_model
-def myamazingDifferentvit_base_patch16_224(pretrained: bool = False, **kwargs):
+def myamazingdifferentvit_base_patch16_224(pretrained: bool = False, **kwargs):
     model_args = dict(patch_size=16, embed_dim=768, depth=12, num_heads=12)
-    return build_model_with_cfg(                        ### timm utility
+    return build_model_with_cfg( # timm utility
         MyAmazingDifferentVisionTransformer,
-        "myamazingDifferentvit_base_patch16_224",
+        "vit_base_patch16_224",
         pretrained,
         pretrained_filter_fn=checkpoint_filter_fn,
-        pretrained_strict=True,
+        pretrained_strict=False, # loads only available and broadcastable weights, ignores the rest
         **dict(model_args, **kwargs),
     )

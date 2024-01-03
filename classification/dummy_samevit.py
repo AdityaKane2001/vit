@@ -25,7 +25,7 @@ actual model of an architecture. Eg. "vit_tiny_patch16_224" is a variant of
     Needless to say, there are no recursive function calls.
     d. The model is created using the kwargs, containing the architectural
     specification (depth, num_layers, etc) and the pretrained weights are loaded
-    based on the pretraining tag. The loaded model is then returned
+    based on the pretraining tag. The loaded model is then returned.
 
 For the user:
 1. User must have `default_cfgs` dict in the module. __all__ should be initialized
@@ -410,38 +410,26 @@ class MyAmazingVisionTransformer(nn.Module):
         return x
 
 
+######## In case you need default configs copied over from the originals
+# variant_name = "myamazingvit_base_patch16_224"
+# original_variant_name = "vit_base_patch16_224"
+
+# for k in original_raw_default_cfgs:
+#     if k.startswith(original_variant_name):
+#         pretraining_tag = k.split(".")[1]
+#         cfg = original_raw_default_cfgs[k]
+#         cfg.pop("hf_hub_id")
+#         new_raw_default_cfgs[".".join([variant_name, pretraining_tag])] = cfg
 
 
-# myamazingvit_tiny_patch16_224_dcfg = default_cfgs["vit_tiny_patch16_224"]
-
-new_raw_default_cfgs = dict()
-
-# def generate_custom_default_cfgs(variant_name, original_variant_name):
-
-variant_name = "myamazingvit_base_patch16_224"
-original_variant_name = "vit_base_patch16_224"
-
-for k in original_raw_default_cfgs:
-    if k.startswith(original_variant_name):
-        pretraining_tag = k.split(".")[1]
-        cfg = original_raw_default_cfgs[k]
-        cfg.pop("hf_hub_id")
-        new_raw_default_cfgs[".".join([variant_name, pretraining_tag])] = cfg
-
-print(new_raw_default_cfgs)
-
-default_cfgs = generate_default_cfgs(new_raw_default_cfgs)
-
-# for cfg_name, cfg in myamazingvit_tiny_patch16_224_dcfg.cfgs.items():
-#     cfg.hf_hub_id = None
-#     default_cfgs["myamazingvit_tiny_patch16_224." + cfg_name] = myamazingvit_tiny_patch16_224_dcfg
+default_cfgs = generate_default_cfgs(original_raw_default_cfgs)
 
 @register_model
 def myamazingvit_base_patch16_224(pretrained: bool = False, **kwargs):
     model_args = dict(patch_size=16, embed_dim=768, depth=12, num_heads=12)
     return build_model_with_cfg(                        ### timm utility
         MyAmazingVisionTransformer,
-        "myamazingvit_base_patch16_224",
+        "vit_base_patch16_224",
         pretrained,
         pretrained_filter_fn=checkpoint_filter_fn,
         pretrained_strict=True,
