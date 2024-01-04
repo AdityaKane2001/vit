@@ -19,6 +19,8 @@ actual model of an architecture. Eg. "vit_tiny_patch16_224" is a variant of
         IMP: You won't be able to use the pretrained weights without this
         registration step. Thus, add a default config for your model, pointing
         to the same weights URL as in the original model default config.
+        EDIT: no need, just pass the original variant in the variant field to
+        `build_model_with_cfg`. Thanks @SahilKhose!
     c. When the model instance is created using `create_model`, it fetches 
     the registered pretrained instances for that variant. *The varaint argument
     in `_create_vision_transformer` is just used to fetch pretrained weights*.
@@ -28,12 +30,11 @@ actual model of an architecture. Eg. "vit_tiny_patch16_224" is a variant of
     based on the pretraining tag. The loaded model is then returned.
 
 For the user:
-1. User must have `default_cfgs` dict in the module. __all__ should be initialized
+User must have `default_cfgs` dict in the module. __all__ should be initialized
 as follows:
 ```py
 __all__ = ["default_cfgs"]
 ```
-2. To create this dict, one might do as shown in this file.
 
 IMPORTANT: This file is a _minimal_ implementation. This means, unless explicitly
 specified, each component shown here is necessary. This file DOES depend on
@@ -427,6 +428,7 @@ default_cfgs = generate_default_cfgs(original_raw_default_cfgs)
 @register_model
 def myamazingvit_base_patch16_224(pretrained: bool = False, **kwargs):
     model_args = dict(patch_size=16, embed_dim=768, depth=12, num_heads=12)
+    
     return build_model_with_cfg(                        ### timm utility
         MyAmazingVisionTransformer,
         "vit_base_patch16_224",

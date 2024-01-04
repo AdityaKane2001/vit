@@ -39,6 +39,12 @@ from timm.optim import create_optimizer_v2, optimizer_kwargs
 from timm.scheduler import create_scheduler_v2, scheduler_kwargs
 from timm.utils import ApexScaler, NativeScaler
 
+##### Model imports
+
+from vit import *
+
+###################
+
 try:
     from apex import amp
     from apex.parallel import DistributedDataParallel as ApexDDP
@@ -352,7 +358,7 @@ group.add_argument('--eval-metric', default='top1', type=str, metavar='EVAL_METR
                    help='Best metric (default: "top1"')
 group.add_argument('--tta', type=int, default=0, metavar='N',
                    help='Test/inference time augmentation (oversampling) factor. 0=None (default: 0)')
-group.add_argument("--local_rank", default=0, type=int)
+group.add_argument("--local-rank", default=0, type=int)
 group.add_argument('--use-multi-epochs-loader', action='store_true', default=False,
                    help='use the multi-epochs-loader to save time at the beginning of every epoch')
 group.add_argument('--log-wandb', action='store_true', default=False,
@@ -719,7 +725,7 @@ def main():
     saver = None
     output_dir = None
     if utils.is_primary(args):
-        if args.experiment:
+        if args.experiment and len(args.experiment) > 0:
             exp_name = args.experiment
         else:
             exp_name = '-'.join([
@@ -727,6 +733,7 @@ def main():
                 safe_model_name(args.model),
                 str(data_config['input_size'][-1])
             ])
+            args.experiment = exp_name
         output_dir = utils.get_outdir(args.output if args.output else './output/train', exp_name)
         decreasing = True if eval_metric == 'loss' else False
         saver = utils.CheckpointSaver(
@@ -745,7 +752,13 @@ def main():
 
     if utils.is_primary(args) and args.log_wandb:
         if has_wandb:
-            wandb.init(project=args.experiment, config=args)
+            wandb.init(
+                    id=args.experiment,
+                    project=args.project,
+                    name=args.model,
+                    config=args,
+                    resume=bool(args.resume),
+                )
         else:
             _logger.warning(
                 "You've requested to log metrics to wandb but package not found. "

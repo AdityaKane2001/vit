@@ -2,9 +2,6 @@
 Copied over with edits from:
 https://github.com/huggingface/pytorch-image-models/blob/f2fdd97e9f859285363c05988820c9350b737e59/timm/models/vision_transformer.py
 i.e. `main` on Jan 02, 2024, 4:23 PM EST.
-
-
-
 """
 
 

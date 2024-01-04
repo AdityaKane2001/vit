@@ -1498,7 +1498,7 @@ def vit_base_patch16_reg8_gap_256(pretrained: bool = False, **kwargs) -> VisionT
 register_model_deprecations(__name__, {
     'vit_tiny_patch16_224_in21k': 'vit_tiny_patch16_224.augreg_in21k',
     'vit_small_patch32_224_in21k': 'vit_small_patch32_224.augreg_in21k',
-    'vit_small_patch16_224_in21k': 'myvit_small_patch16_224.augreg_in21k',
+    'vit_small_patch16_224_in21k': 'vit_small_patch16_224.augreg_in21k',
     'vit_base_patch32_224_in21k': 'vit_base_patch32_224.augreg_in21k',
     'vit_base_patch16_224_in21k': 'vit_base_patch16_224.augreg_in21k',
     'vit_base_patch8_224_in21k': 'vit_base_patch8_224.augreg_in21k',
@@ -1507,7 +1507,7 @@ register_model_deprecations(__name__, {
     'vit_huge_patch14_224_in21k': 'vit_huge_patch14_224.orig_in21k',
     'vit_base_patch32_224_sam': 'vit_base_patch32_224.sam',
     'vit_base_patch16_224_sam': 'vit_base_patch16_224.sam',
-    'vit_small_patch16_224_dino': 'myvit_small_patch16_224.dino',
+    'vit_small_patch16_224_dino': 'vit_small_patch16_224.dino',
     'vit_small_patch8_224_dino': 'vit_small_patch8_224.dino',
     'vit_base_patch16_224_dino': 'vit_base_patch16_224.dino',
     'vit_base_patch8_224_dino': 'vit_base_patch8_224.dino',

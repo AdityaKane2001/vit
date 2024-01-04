@@ -1,4 +1,3 @@
 NUM_GPUS=8
 ./dist_train.sh $NUM_GPUS -c\
-    /workspace/akane/NAT/classification/configs/lowrank_dinat_s_tiny.yml \
-    /workspace/datasets/ImageNet
+    /workspace/akane/vit/classification/configs/vit_small_patch16_224_augreg_in21k.yml
