@@ -872,6 +872,8 @@ def main():
     if best_metric is not None:
         results['best'] = results['all'][best_epoch]
         _logger.info('*** Best metric: {0} (epoch {1})'.format(best_metric, best_epoch))
+        if args.log_wandb and has_wandb:
+            wandb.log({"best_metric": best_metric})
     print(f'--result\n{json.dumps(results, indent=4)}')
 
 

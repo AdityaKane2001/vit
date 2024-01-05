@@ -2,11 +2,14 @@
 
 # Model params
 model: vit_small_patch16_224.augreg_in21k
+pretrained: true
 img_size: 224
 batch_size: 128
 
 # Data and augmentation
 data: /workspace/datasets/ImageNet
+color_jitter: 0
+crop_pct: 0.9
 
 # Optimization
 # To reproduce results as in "How to train your ViT?":
@@ -22,7 +25,8 @@ lr: 0.03
 warmup_lr: 1e-6
 min_lr: 5e-6
 sched: cosine
-sched_epochwise: False
+sched_on_updates: true
+# sched_epochwise: False
 
 # Misc
 amp: True
@@ -48,8 +52,6 @@ checkpoint_hist: 10
 class_map: ''
 clip_grad: null
 clip_mode: norm
-color_jitter: 0.4
-crop_pct: null
 cutmix: 0.0
 cutmix_minmax: null
 data_dir: null
@@ -115,7 +117,6 @@ opt_eps: null
 opt_kwargs: {}
 patience_epochs: 10
 pin_mem: false
-pretrained: false
 pretrained_path: null
 ratio:
 - 0.75
@@ -130,7 +131,6 @@ save_images: false
 scale:
 - 0.08
 - 1.0
-sched_on_updates: false
 seed: 42
 smoothing: 0.1
 split_bn: false
