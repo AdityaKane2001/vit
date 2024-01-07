@@ -17,12 +17,13 @@ crop_pct: 0.9
 #   500 warmup steps, 20k total steps, 0.03 LR, SGD + 0.9 momentum, bfloat16
 #   below is the closest possible approximation to the same
 
-epochs: 64
-cooldown_epochs: 0
-warmup_epochs: 2
+epochs: 300
+cooldown_epochs: 10
+warmup_epochs: 20
 opt: sgd
 momentum: 0.9
-lr: 0.03
+weight_decay: 5e-2
+lr: 1e-3
 warmup_lr: 1e-6
 min_lr: 5e-6
 sched: cosine
@@ -34,7 +35,6 @@ clip_mode: norm
 # Misc
 amp: True
 amp_dtype: float16
-weight_decay: 0
 log_wandb: True
 project: wintome-dinat-s-IN1k
 output: /workspace/akane/runs

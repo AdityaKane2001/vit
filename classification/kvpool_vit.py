@@ -34,7 +34,6 @@ class KVPoolAttention(nn.Module):
     def __init__(
             self,
             dim: int,
-            input_size = 196,
             num_heads: int = 8,
             qkv_bias: bool = False,
             qk_norm: bool = False,
@@ -44,7 +43,6 @@ class KVPoolAttention(nn.Module):
             has_class_token: bool = True,
             kernel_size: int = 2,
             pool_fn="avg",
-            rpb=False
     ) -> None:
         super().__init__()
         assert dim % num_heads == 0, 'dim should be divisible by num_heads'
@@ -52,9 +50,6 @@ class KVPoolAttention(nn.Module):
         self.head_dim = dim // num_heads
         self.scale = self.head_dim ** -0.5
         self.fused_attn = False # use_fused_attn()
-
-        self.input_size = input_size
-        
         self.qkv = nn.Linear(dim, dim * 3, bias=qkv_bias)
         self.q_norm = norm_layer(self.head_dim) if qk_norm else nn.Identity()
         self.k_norm = norm_layer(self.head_dim) if qk_norm else nn.Identity()
@@ -68,30 +63,9 @@ class KVPoolAttention(nn.Module):
         elif pool_fn == "max":
             self.pool_fn = F.max_pool2d
         
-        if rpb:
-            self.q_rpb = nn.Parameter(torch.zeros(num_heads, (2 * self.input_size - 1), (2 * self.input_size - 1)))
-            self.add_rpb = True
-            trunc_normal_(self.rpb, std=.02)
-            coords_h = torch.arange(self.input_size)
-            coords_w = torch.arange(self.input_size)
-            coords = torch.stack(torch.meshgrid([coords_h, coords_w], indexing='ij'))  # 2, L, L
-            coords_flatten = torch.flatten(coords, 1)  # 2, L^2
-            relative_coords = coords_flatten[:, :, None] - coords_flatten[:, None, :]  # 2, L^2, L^2
-            relative_coords = relative_coords.permute(1, 2, 0).contiguous()  # L^2, L^2, 2
-            relative_coords[:, :, 0] += self.input_size - 1  # shift to start from 0
-            relative_coords[:, :, 1] += self.input_size - 1
-            relative_coords[:, :, 0] *= 2 * self.input_size - 1
-            relative_position_index = torch.flipud(torch.fliplr(relative_coords.sum(-1)))  # L^2, L^2
-            self.register_buffer("relative_position_index", relative_position_index)
-
         self.has_class_token = has_class_token
 
-    def apply_pb(self, attn):
-        relative_position_bias = self.rpb.permute(1, 2, 0).flatten(0, 1)[self.relative_position_index.view(-1)].view(
-            self.input_size ** 2, self.input_size ** 2, -1)
-        relative_position_bias = relative_position_bias.permute(2, 0, 1).contiguous().unsqueeze(0)
-        return attn + relative_position_bias
-    
+
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         B, N, C = x.shape
         
@@ -127,8 +101,6 @@ class KVPoolAttention(nn.Module):
         
         q = q * self.scale
         attn = q @ k.transpose(-2, -1)
-        if self.add_rpb:
-            attn = self.apply_pb(attn)
         attn = attn.softmax(dim=-1)
         attn = self.attn_drop(attn)
         x = attn @ v
