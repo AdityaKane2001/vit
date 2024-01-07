@@ -5,7 +5,8 @@ import torch
 from fvcore.nn import FlopCountAnalysis
 from natten.flops import add_natten_handle
 
-from vit import *
+from vit import vit_small_patch16_224
+from kvpool_vit import kvpool_vit_small_patch16_224
 
 # from timm.models import create_model
 
@@ -27,7 +28,8 @@ model_clss = [
     # create_model(
     #     "vit_small_patch16_224.augreg_in21k_ft_in1k", pretrained=False
     # ),
-    vit_small_patch16_224()
+    vit_small_patch16_224(),
+    kvpool_vit_small_patch16_224()
     
     # attnprune_vit_small_patch16_224_augreg_in21k,
     # vit_small_patch16_224_augreg_in21k_ft_in1k,

@@ -42,6 +42,7 @@ from timm.utils import ApexScaler, NativeScaler
 ##### Model imports
 
 from vit import *
+from kvpool_vit import *
 
 ###################
 

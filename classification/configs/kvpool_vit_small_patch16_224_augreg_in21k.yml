@@ -1,10 +1,11 @@
 ####### Explicit
 
 # Model params
-model: vit_small_patch16_224.augreg_in21k
+model: kvpool_vit_small_patch16_224.augreg_in21k
 pretrained: true
 img_size: 224
 batch_size: 128
+model_kwargs: "pool_fn='avg' kernel_size=2"
 
 # Data and augmentation
 data: /workspace/datasets/ImageNet
@@ -37,6 +38,7 @@ weight_decay: 0
 log_wandb: True
 project: wintome-dinat-s-IN1k
 output: /workspace/akane/runs
+
 
 
 
