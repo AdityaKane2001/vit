@@ -31,6 +31,8 @@ from timm.utils import accuracy, AverageMeter, natural_key, setup_default_loggin
 from vit import *
 from dummy_samevit import *
 from dummy_diffvit import *
+from kvmerge_vit import *
+from vit_timm import *
 
 try:
     from apex import amp

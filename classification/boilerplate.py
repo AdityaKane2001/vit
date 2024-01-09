@@ -4,8 +4,6 @@ https://github.com/huggingface/pytorch-image-models/blob/f2fdd97e9f859285363c059
 i.e. `main` on Jan 02, 2024, 4:23 PM EST.
 """
 
-
-
 """ Vision Transformer (ViT) in PyTorch
 
 A PyTorch implement of Vision Transformers as described in:
